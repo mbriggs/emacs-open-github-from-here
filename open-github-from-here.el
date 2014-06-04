@@ -50,9 +50,10 @@
                     (line-number-at-pos (region-end))))))
          ((open-github-from-here:git-project-p)
           (setq github-url (shell-command-to-string
-            (format "%s %s"
+            (format "%s %s %d"
                     open-github-from-here:command
-                    (file-name-nondirectory (buffer-file-name)))))))
+                    (file-name-nondirectory (buffer-file-name))
+                    (line-number-at-pos (point)))))))
    (browse-url github-url)))
 
 (defun open-github-from-here:chomp (str)
