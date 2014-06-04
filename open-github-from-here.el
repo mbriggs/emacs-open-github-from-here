@@ -60,7 +60,8 @@
                                      open-github-from-here:command
                                      (file-name-nondirectory (buffer-file-name))
                                      (line-number-at-pos (point)))))))
-    (browse-url github-url)))
+    (if github-url (browse-url github-url)
+      (message "not currently in a git project!!"))))
 
 (defun open-github-from-here:chomp (str)
   (replace-regexp-in-string "[\n\r]+$" "" str))
