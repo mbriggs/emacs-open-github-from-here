@@ -41,20 +41,26 @@
 (defun open-github-from-here ()
   (interactive)
   (let ((github-url))
-   (cond ((and (open-github-from-here:git-project-p) (use-region-p))
-          (setq github-url (shell-command-to-string
-            (format "%s %s %d %d"
-                    open-github-from-here:command
-                    (file-name-nondirectory (buffer-file-name))
-                    (line-number-at-pos (region-beginning))
-                    (- (line-number-at-pos (region-end)) 1)))))
-         ((open-github-from-here:git-project-p)
-          (setq github-url (shell-command-to-string
-            (format "%s %s %d"
-                    open-github-from-here:command
-                    (file-name-nondirectory (buffer-file-name))
-                    (line-number-at-pos (point)))))))
-   (browse-url github-url)))
+    (cond ((and (open-github-from-here:git-project-p) (use-region-p))
+           (setq github-url (shell-command-to-string
+                             (format "%s %s %d %d"
+                                     open-github-from-here:command
+                                     (file-name-nondirectory (buffer-file-name))
+                                     (line-number-at-pos (region-beginning))
+                                     (- (line-number-at-pos (region-end)) 1)))))
+          ((and (open-github-from-here:git-project-p)
+                (eq 1 (line-number-at-pos (point))))
+           (setq github-url (shell-command-to-string
+                             (format "%s %s"
+                                     open-github-from-here:command
+                                     (file-name-nondirectory (buffer-file-name))))))
+          ((open-github-from-here:git-project-p)
+           (setq github-url (shell-command-to-string
+                             (format "%s %s %d"
+                                     open-github-from-here:command
+                                     (file-name-nondirectory (buffer-file-name))
+                                     (line-number-at-pos (point)))))))
+    (browse-url github-url)))
 
 (defun open-github-from-here:chomp (str)
   (replace-regexp-in-string "[\n\r]+$" "" str))
