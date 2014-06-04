@@ -47,7 +47,7 @@
                     open-github-from-here:command
                     (file-name-nondirectory (buffer-file-name))
                     (line-number-at-pos (region-beginning))
-                    (line-number-at-pos (region-end))))))
+                    (- (line-number-at-pos (region-end)) 1)))))
          ((open-github-from-here:git-project-p)
           (setq github-url (shell-command-to-string
             (format "%s %s %d"
